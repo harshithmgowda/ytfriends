@@ -39,7 +39,7 @@ npm run dev
 ```env
 PORT=5000
 MONGO_URI=your_mongodb_uri
-JWT_SECRET=supersecretjwt
+JWT_SECRET=your_long_random_jwt_secret
 ENCRYPTION_KEY=myencryptionkey
 CLIENT_URL=http://localhost:5173
 ```
@@ -78,6 +78,8 @@ ENCRYPTION_KEY=your_strong_random_secret
 CLIENT_URL=https://your-vercel-app.vercel.app
 NODE_ENV=production
 ```
+
+Generate a unique JWT secret per environment; do not reuse the same value for local development and production.
 
 ### Frontend on Vercel
 
