@@ -2,6 +2,7 @@ import Message from "../models/Message.js";
 import Room from "../models/Room.js";
 import { encryptMessage } from "../utils/encrypt.js";
 import { decryptMessage } from "../utils/decrypt.js";
+import { getIO } from "../socket/socketHandler.js";
 
 const buildImageUrl = (req, file) => {
   if (!file) return "";
@@ -55,6 +56,12 @@ export const sendMessage = async (req, res) => {
 
   await Room.findOneAndUpdate({ roomKey: roomId }, { $addToSet: { participants: req.user._id } });
 
-  res.status(201).json({ message: serializeMessage(newMessage) });
+  const savedMessage = serializeMessage(newMessage);
+  const io = getIO();
+  if (io) {
+    io.to(roomId).emit("receive-message", savedMessage);
+  }
+
+  res.status(201).json({ message: savedMessage });
 };
 

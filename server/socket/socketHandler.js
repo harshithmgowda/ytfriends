@@ -3,7 +3,12 @@ import Room from "../models/Room.js";
 import { encryptMessage } from "../utils/encrypt.js";
 import { decryptMessage } from "../utils/decrypt.js";
 
+let ioInstance = null;
+
+export const getIO = () => ioInstance;
+
 const socketHandler = (io) => {
+  ioInstance = io;
   const roomState = new Map();
 
   io.on("connection", (socket) => {

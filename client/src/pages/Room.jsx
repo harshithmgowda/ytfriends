@@ -74,7 +74,7 @@ const Room = () => {
 
     const onMessage = (data) => {
       if (data.roomId === roomKey) {
-        setMessages((prev) => [...prev, data]);
+        setMessages((prev) => (prev.some((item) => item._id === data._id) ? prev : [...prev, data]));
       }
     };
 
@@ -130,17 +130,29 @@ const Room = () => {
     await broadcastState(false, nextId);
   };
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (!message.trim()) return;
 
-    socket.emit("send-message", {
-      roomId: roomKey,
-      sender: user?._id,
-      receiver: null,
-      message: message.trim()
-    });
+    try {
+      const { data } = await API.post("/messages/send", {
+        roomId: roomKey,
+        message: message.trim(),
+        receiver: null
+      });
 
-    setMessage("");
+      if (data?.message) {
+        setMessages((prev) => (prev.some((item) => item._id === data.message._id) ? prev : [...prev, data.message]));
+      }
+      setMessage("");
+    } catch {
+      socket.emit("send-message", {
+        roomId: roomKey,
+        sender: user?._id,
+        receiver: null,
+        message: message.trim()
+      });
+      setMessage("");
+    }
   };
 
   return (
