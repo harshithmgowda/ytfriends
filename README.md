@@ -96,16 +96,10 @@ The frontend includes `client/vercel.json` so React Router routes work on refres
 
 ### GitHub
 
-The workspace is ready to be initialized as a Git repository and pushed to:
-
-```text
-https://github.com/harshithmgowda/ytfriends.git
-```
-
 After committing locally, use:
 
 ```bash
-git remote add origin https://github.com/harshithmgowda/ytfriends.git
+git remote add origin https://github.com/<your-username>/<your-repo>.git
 git branch -M main
 git push -u origin main
 ```
