@@ -1,7 +1,7 @@
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import API from "../api/axios";
-import Sidebar from "../components/Sidebar";
+import MessageBubble from "../components/MessageBubble";
 import VideoPlayer, { getYouTubeId } from "../components/VideoPlayer";
 import socket from "../socket/socket";
 import { AuthContext } from "../context/AuthContext";
@@ -13,6 +13,9 @@ const Room = () => {
   const [videoUrl, setVideoUrl] = useState("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState("");
+  const [loadingMessages, setLoadingMessages] = useState(true);
   const playerRef = useRef(null);
   const isHost = useMemo(() => room?.host?._id === user?._id, [room, user]);
 
@@ -36,8 +39,20 @@ const Room = () => {
     }
   };
 
+  const loadMessages = async () => {
+    try {
+      const { data } = await API.get(`/messages/room/${roomKey}`);
+      setMessages(data.messages || []);
+    } catch {
+      setMessages([]);
+    } finally {
+      setLoadingMessages(false);
+    }
+  };
+
   useEffect(() => {
     loadRoom();
+    loadMessages();
     socket.emit("join-room", { roomId: roomKey, user });
 
     const onSync = (payload) => {
@@ -57,12 +72,20 @@ const Room = () => {
       setIsPlaying(Boolean(payload.isPlaying));
     };
 
+    const onMessage = (data) => {
+      if (data.roomId === roomKey) {
+        setMessages((prev) => [...prev, data]);
+      }
+    };
+
     socket.on("sync-update", onSync);
     socket.on("room-state", onSync);
+    socket.on("receive-message", onMessage);
 
     return () => {
       socket.off("sync-update", onSync);
       socket.off("room-state", onSync);
+      socket.off("receive-message", onMessage);
     };
   }, [roomKey]);
 
@@ -107,64 +130,102 @@ const Room = () => {
     await broadcastState(false, nextId);
   };
 
-  return (
-    <div className="mx-auto grid max-w-7xl gap-6 px-4 py-8 lg:grid-cols-[280px_1fr] lg:px-8">
-      <Sidebar />
+  const sendMessage = () => {
+    if (!message.trim()) return;
 
-      <div className="space-y-6">
-        <section className="rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/20 backdrop-blur-xl">
-          <p className="text-xs uppercase tracking-[0.35em] text-brand-300">Private watch room</p>
-          <h1 className="mt-2 text-3xl font-bold text-white">{room?.title || "Watch Together 🎬"}</h1>
-          <p className="mt-2 text-zinc-400">Room key: <span className="font-semibold text-brand-300">{roomKey}</span></p>
+    socket.emit("send-message", {
+      roomId: roomKey,
+      sender: user?._id,
+      receiver: null,
+      message: message.trim()
+    });
+
+    setMessage("");
+  };
+
+  return (
+    <div className="mx-auto max-w-7xl px-4 py-6 lg:px-8">
+      <section className="mb-4 rounded-3xl border border-white/10 bg-white/5 px-5 py-4 shadow-xl shadow-black/20 backdrop-blur-xl">
+        <p className="text-xs uppercase tracking-[0.35em] text-brand-300">Private watch room</p>
+        <div className="mt-2 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+          <h1 className="text-2xl font-bold text-white">{room?.title || "Watch Together"}</h1>
+          <p className="text-sm text-zinc-400">
+            Room key: <span className="font-semibold text-brand-300">{roomKey}</span>
+          </p>
+        </div>
+      </section>
+
+      <div className="grid gap-4 lg:grid-cols-[380px_1fr]">
+        <section className="flex min-h-[calc(100vh-180px)] flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-2xl shadow-black/20 backdrop-blur-xl">
+          <div className="border-b border-white/10 p-4">
+            <h2 className="text-lg font-semibold text-white">Chat</h2>
+            <p className="text-sm text-zinc-400">Simple live chat for everyone in the room.</p>
+          </div>
+
+          <div className="flex-1 space-y-3 overflow-y-auto p-4">
+            {loadingMessages && <p className="text-sm text-zinc-400">Loading chat...</p>}
+            {!loadingMessages && messages.length === 0 && <p className="text-sm text-zinc-400">No messages yet.</p>}
+            {messages.map((msg) => (
+              <MessageBubble
+                key={msg._id || msg.createdAt}
+                message={msg}
+                isSelf={String(msg.sender?._id || msg.sender) === String(user?._id)}
+              />
+            ))}
+          </div>
+
+          <div className="border-t border-white/10 p-4">
+            <div className="flex gap-2">
+              <input
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                className="flex-1 rounded-2xl border border-white/10 bg-zinc-950/80 px-4 py-3 text-white outline-none focus:border-brand-500"
+                placeholder="Type a message"
+              />
+              <button
+                onClick={sendMessage}
+                className="rounded-2xl bg-brand-500 px-5 py-3 font-semibold text-white hover:bg-brand-600"
+              >
+                Send
+              </button>
+            </div>
+          </div>
         </section>
 
-        <div className="grid gap-6 xl:grid-cols-[1.7fr_1fr]">
-          <section className="rounded-[2rem] border border-white/10 bg-white/5 p-4 shadow-2xl shadow-black/20 backdrop-blur-xl">
-            <VideoPlayer videoUrl={videoUrl} onReady={onReady} className="rounded-[1.5rem]" />
-
-            {isHost && (
-              <div className="mt-4 grid gap-3 md:grid-cols-[1fr_auto_auto_auto]">
-                <input
-                  value={videoUrl}
-                  onChange={(e) => setVideoUrl(e.target.value)}
-                  className="rounded-2xl border border-white/10 bg-zinc-950/80 px-4 py-3 text-white outline-none focus:border-brand-500"
-                  placeholder="YouTube URL or ID"
-                />
-                <button onClick={() => broadcastState(true, videoUrl)} className="rounded-2xl bg-brand-500 px-5 py-3 font-semibold text-white hover:bg-brand-600">
-                  Play
-                </button>
-                <button onClick={() => broadcastState(false, videoUrl)} className="rounded-2xl border border-white/10 bg-white/5 px-5 py-3 font-semibold text-white hover:bg-white/10">
-                  Pause
-                </button>
-                <button onClick={applyVideoUrl} className="rounded-2xl border border-brand-500/30 bg-brand-500/10 px-5 py-3 font-semibold text-brand-200 hover:bg-brand-500 hover:text-white">
-                  Load video
-                </button>
-              </div>
-            )}
-          </section>
-
-          <section className="rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/20 backdrop-blur-xl">
-            <h2 className="text-2xl font-semibold text-white">Room details</h2>
-            <div className="mt-4 space-y-3 text-sm text-zinc-300">
-              <div className="rounded-2xl border border-white/10 bg-zinc-950/80 p-4">
-                <p className="text-zinc-500">Status</p>
-                <p className="mt-1 text-lg font-semibold text-white">{isPlaying ? "Playing" : "Paused"}</p>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-zinc-950/80 p-4">
-                <p className="text-zinc-500">Host</p>
-                <p className="mt-1 text-lg font-semibold text-white">{room?.host?.name || "You"}</p>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-zinc-950/80 p-4">
-                <p className="text-zinc-500">Participants</p>
-                <p className="mt-1 text-lg font-semibold text-white">{room?.participants?.length || 0}</p>
-              </div>
+        <section className="rounded-3xl border border-white/10 bg-white/5 p-4 shadow-2xl shadow-black/20 backdrop-blur-xl">
+          <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h2 className="text-lg font-semibold text-white">Video</h2>
+              <p className="text-sm text-zinc-400">Watch the YouTube video here.</p>
             </div>
-
-            <div className="mt-6 rounded-2xl border border-brand-500/20 bg-brand-500/10 p-4 text-sm text-brand-100">
-              Open the chat tab in another panel or browser window for live conversation while the room syncs.
+            <div className="text-sm text-zinc-400">
+              {isPlaying ? "Playing" : "Paused"} • {room?.participants?.length || 0} people
             </div>
-          </section>
-        </div>
+          </div>
+
+          <VideoPlayer videoUrl={videoUrl} onReady={onReady} className="rounded-[1.5rem]" />
+
+          {isHost && (
+            <div className="mt-4 flex flex-col gap-3 md:flex-row">
+              <input
+                value={videoUrl}
+                onChange={(e) => setVideoUrl(e.target.value)}
+                className="flex-1 rounded-2xl border border-white/10 bg-zinc-950/80 px-4 py-3 text-white outline-none focus:border-brand-500"
+                placeholder="YouTube URL or ID"
+              />
+              <button onClick={() => broadcastState(true, videoUrl)} className="rounded-2xl bg-brand-500 px-5 py-3 font-semibold text-white hover:bg-brand-600">
+                Play
+              </button>
+              <button onClick={() => broadcastState(false, videoUrl)} className="rounded-2xl border border-white/10 bg-white/5 px-5 py-3 font-semibold text-white hover:bg-white/10">
+                Pause
+              </button>
+              <button onClick={applyVideoUrl} className="rounded-2xl border border-brand-500/30 bg-brand-500/10 px-5 py-3 font-semibold text-brand-200 hover:bg-brand-500 hover:text-white">
+                Load
+              </button>
+            </div>
+          )}
+        </section>
       </div>
     </div>
   );
