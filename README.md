@@ -10,7 +10,8 @@ A modern full-stack YouTube watch party app with private rooms, real-time chat, 
 ## Project structure
 
 - `client/` – Vite React frontend
-- `server/` – Express + MongoDB backend
+- `server/` – Express + MongoDB +socket
+- 
 
 ## Local setup
 
