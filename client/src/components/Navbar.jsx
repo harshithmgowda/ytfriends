@@ -17,10 +17,10 @@ const Navbar = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-zinc-950/90 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-white/10 bg-zinc-950/75 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
         <Link to="/dashboard" className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-brand-500 text-lg font-black text-white shadow-glow">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-500 text-lg font-black text-white shadow-glow">
             ▶
           </div>
           <div>
@@ -61,4 +61,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

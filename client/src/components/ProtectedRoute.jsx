@@ -8,8 +8,8 @@ const ProtectedRoute = ({ children }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-zinc-950 text-white">
-        <div className="rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-sm text-zinc-300 shadow-glow">
+      <div className="grid min-h-screen place-items-center px-4 text-white">
+        <div className="ui-card px-6 py-5 text-sm text-zinc-300 shadow-glow">
           Loading your space...
         </div>
       </div>
@@ -24,4 +24,3 @@ const ProtectedRoute = ({ children }) => {
 };
 
 export default ProtectedRoute;
-

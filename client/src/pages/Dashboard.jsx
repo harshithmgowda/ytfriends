@@ -41,21 +41,21 @@ const Dashboard = () => {
       <Sidebar />
 
       <div className="space-y-6">
-        <section className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/20 backdrop-blur-xl">
+        <section className="ui-surface p-6">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <p className="text-xs uppercase tracking-[0.35em] text-brand-300">Your dashboard</p>
-              <h1 className="mt-2 text-3xl font-bold text-white">Welcome, {user?.name}</h1>
-              <p className="mt-2 max-w-2xl text-zinc-400">
-                Create a private room, drop in a secret key, and watch YouTube together with real-time chat.
+            <div className="max-w-2xl">
+              <p className="ui-kicker">Your dashboard</p>
+              <h1 className="ui-title">Welcome, {user?.name}</h1>
+              <p className="ui-copy">
+                Create a private room, drop in a room key, and watch together with live chat and synced playback.
               </p>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
-              <div className="rounded-3xl border border-white/10 bg-zinc-950/70 p-4">
+              <div className="ui-card-muted p-4">
                 <p className="text-xs uppercase tracking-[0.3em] text-zinc-500">Rooms joined</p>
                 <p className="mt-2 text-3xl font-bold text-white">{rooms.length}</p>
               </div>
-              <div className="rounded-3xl border border-white/10 bg-zinc-950/70 p-4">
+              <div className="ui-card-muted p-4">
                 <p className="text-xs uppercase tracking-[0.3em] text-zinc-500">Status</p>
                 <p className="mt-2 text-3xl font-bold text-brand-300">Live</p>
               </div>
@@ -64,7 +64,7 @@ const Dashboard = () => {
         </section>
 
         <div className="grid gap-6 xl:grid-cols-2">
-          <section className="rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/20 backdrop-blur-xl">
+          <section className="ui-surface p-6">
             <h2 className="text-2xl font-semibold text-white">Create a room</h2>
             <p className="mt-2 text-sm text-zinc-400">Generate a private room key and start watching immediately.</p>
             <div className="mt-5 space-y-3">
@@ -72,24 +72,24 @@ const Dashboard = () => {
                 value={createForm.title}
                 onChange={(e) => setCreateForm({ ...createForm, title: e.target.value })}
                 placeholder="Room title"
-                className="w-full rounded-2xl border border-white/10 bg-zinc-950/80 px-4 py-3 text-white outline-none focus:border-brand-500"
+                className="ui-input"
               />
               <input
                 value={createForm.videoUrl}
                 onChange={(e) => setCreateForm({ ...createForm, videoUrl: e.target.value })}
                 placeholder="YouTube URL or video ID"
-                className="w-full rounded-2xl border border-white/10 bg-zinc-950/80 px-4 py-3 text-white outline-none focus:border-brand-500"
+                className="ui-input"
               />
               <button
                 onClick={createRoom}
-                className="w-full rounded-2xl bg-brand-500 px-4 py-3 font-semibold text-white transition hover:bg-brand-600"
+                className="ui-button-primary w-full"
               >
                 Create private room
               </button>
             </div>
           </section>
 
-          <section className="rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/20 backdrop-blur-xl">
+          <section className="ui-surface p-6">
             <h2 className="text-2xl font-semibold text-white">Join with a secret key</h2>
             <p className="mt-2 text-sm text-zinc-400">Enter the room key your host shared with you.</p>
             <div className="mt-5 space-y-3">
@@ -97,12 +97,12 @@ const Dashboard = () => {
                 value={joinKey}
                 onChange={(e) => setJoinKey(e.target.value)}
                 placeholder="ROOMKEY"
-                className="w-full rounded-2xl border border-white/10 bg-zinc-950/80 px-4 py-3 text-white uppercase outline-none focus:border-brand-500"
+                className="ui-input uppercase"
               />
               <button
                 onClick={joinRoom}
                 disabled={!joinKey.trim()}
-                className="w-full rounded-2xl border border-brand-500/30 bg-brand-500/10 px-4 py-3 font-semibold text-brand-200 transition hover:bg-brand-500 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                className="ui-button-secondary w-full"
               >
                 Join room
               </button>
@@ -110,7 +110,7 @@ const Dashboard = () => {
           </section>
         </div>
 
-        <section className="rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/20 backdrop-blur-xl">
+        <section className="ui-surface p-6">
           <div className="flex items-center justify-between gap-4">
             <div>
               <h2 className="text-2xl font-semibold text-white">Your rooms</h2>
@@ -151,4 +151,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-

@@ -157,8 +157,8 @@ const Room = () => {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 lg:px-8">
-      <section className="mb-4 rounded-3xl border border-white/10 bg-white/5 px-5 py-4 shadow-xl shadow-black/20 backdrop-blur-xl">
-        <p className="text-xs uppercase tracking-[0.35em] text-brand-300">Private watch room</p>
+      <section className="ui-surface mb-4 px-5 py-4">
+        <p className="ui-kicker">Private watch room</p>
         <div className="mt-2 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <h1 className="text-2xl font-bold text-white">{room?.title || "Watch Together"}</h1>
           <p className="text-sm text-zinc-400">
@@ -168,7 +168,7 @@ const Room = () => {
       </section>
 
       <div className="grid gap-4 lg:grid-cols-[380px_1fr]">
-        <section className="flex min-h-[calc(100vh-180px)] flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-2xl shadow-black/20 backdrop-blur-xl">
+        <section className="ui-card flex min-h-[calc(100vh-180px)] flex-col">
           <div className="border-b border-white/10 p-4">
             <h2 className="text-lg font-semibold text-white">Chat</h2>
             <p className="text-sm text-zinc-400">Simple live chat for everyone in the room.</p>
@@ -192,12 +192,12 @@ const Room = () => {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                className="flex-1 rounded-2xl border border-white/10 bg-zinc-950/80 px-4 py-3 text-white outline-none focus:border-brand-500"
+                className="ui-input flex-1"
                 placeholder="Type a message"
               />
               <button
                 onClick={sendMessage}
-                className="rounded-2xl bg-brand-500 px-5 py-3 font-semibold text-white hover:bg-brand-600"
+                className="ui-button-primary"
               >
                 Send
               </button>
@@ -205,7 +205,7 @@ const Room = () => {
           </div>
         </section>
 
-        <section className="rounded-3xl border border-white/10 bg-white/5 p-4 shadow-2xl shadow-black/20 backdrop-blur-xl">
+        <section className="ui-card p-4">
           <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
             <div>
               <h2 className="text-lg font-semibold text-white">Video</h2>
@@ -216,23 +216,23 @@ const Room = () => {
             </div>
           </div>
 
-          <VideoPlayer videoUrl={videoUrl} onReady={onReady} className="rounded-[1.5rem]" />
+          <VideoPlayer videoUrl={videoUrl} onReady={onReady} className="rounded-[1.5rem] shadow-black/30" />
 
           {isHost && (
             <div className="mt-4 flex flex-col gap-3 md:flex-row">
               <input
                 value={videoUrl}
                 onChange={(e) => setVideoUrl(e.target.value)}
-                className="flex-1 rounded-2xl border border-white/10 bg-zinc-950/80 px-4 py-3 text-white outline-none focus:border-brand-500"
+                className="ui-input flex-1"
                 placeholder="YouTube URL or ID"
               />
-              <button onClick={() => broadcastState(true, videoUrl)} className="rounded-2xl bg-brand-500 px-5 py-3 font-semibold text-white hover:bg-brand-600">
+              <button onClick={() => broadcastState(true, videoUrl)} className="ui-button-primary">
                 Play
               </button>
-              <button onClick={() => broadcastState(false, videoUrl)} className="rounded-2xl border border-white/10 bg-white/5 px-5 py-3 font-semibold text-white hover:bg-white/10">
+              <button onClick={() => broadcastState(false, videoUrl)} className="ui-button-ghost">
                 Pause
               </button>
-              <button onClick={applyVideoUrl} className="rounded-2xl border border-brand-500/30 bg-brand-500/10 px-5 py-3 font-semibold text-brand-200 hover:bg-brand-500 hover:text-white">
+              <button onClick={applyVideoUrl} className="ui-button-secondary">
                 Load
               </button>
             </div>
@@ -244,4 +244,3 @@ const Room = () => {
 };
 
 export default Room;
-

@@ -36,25 +36,25 @@ const Feed = () => {
       <Sidebar />
 
       <div className="space-y-6">
-        <section className="rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/20 backdrop-blur-xl">
-          <p className="text-xs uppercase tracking-[0.35em] text-brand-300">Community feed</p>
-          <h1 className="mt-2 text-3xl font-bold text-white">Share what you&apos;re watching</h1>
-          <p className="mt-2 text-zinc-400">Post a recommendation, a reaction, or a highlight from your watch room.</p>
+        <section className="ui-surface p-6">
+          <p className="ui-kicker">Community feed</p>
+          <h1 className="ui-title">Share what you&apos;re watching</h1>
+          <p className="ui-copy">Post a recommendation, a reaction, or a highlight from your watch room.</p>
         </section>
 
-        <form onSubmit={createPost} className="rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/20 backdrop-blur-xl">
+        <form onSubmit={createPost} className="ui-surface p-6">
           <div className="grid gap-3 md:grid-cols-2">
             <input
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
               placeholder="Post title"
-              className="rounded-2xl border border-white/10 bg-zinc-950/80 px-4 py-3 text-white outline-none focus:border-brand-500"
+              className="ui-input"
             />
             <input
               value={form.image}
               onChange={(e) => setForm({ ...form, image: e.target.value })}
               placeholder="Image URL (optional)"
-              className="rounded-2xl border border-white/10 bg-zinc-950/80 px-4 py-3 text-white outline-none focus:border-brand-500"
+              className="ui-input"
             />
           </div>
           <textarea
@@ -62,10 +62,10 @@ const Feed = () => {
             onChange={(e) => setForm({ ...form, content: e.target.value })}
             placeholder="Write your thoughts..."
             rows={4}
-            className="mt-3 w-full rounded-2xl border border-white/10 bg-zinc-950/80 px-4 py-3 text-white outline-none focus:border-brand-500"
+            className="ui-input mt-3 resize-none"
           />
           <div className="mt-4 flex justify-end">
-            <button className="rounded-2xl bg-brand-500 px-5 py-3 font-semibold text-white transition hover:bg-brand-600">
+            <button className="ui-button-primary">
               Publish post
             </button>
           </div>
@@ -84,4 +84,3 @@ const Feed = () => {
 };
 
 export default Feed;
-

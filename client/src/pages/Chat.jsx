@@ -94,9 +94,9 @@ const Chat = () => {
     <div className="mx-auto grid max-w-7xl gap-6 px-4 py-8 lg:grid-cols-[280px_1fr] lg:px-8">
       <Sidebar />
 
-      <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-2xl shadow-black/20 backdrop-blur-xl">
+      <div className="ui-card">
         <div className="border-b border-white/10 p-6">
-          <p className="text-xs uppercase tracking-[0.35em] text-brand-300">Encrypted chat</p>
+          <p className="ui-kicker">Encrypted chat</p>
           <h1 className="mt-2 text-3xl font-bold text-white">Room chat</h1>
           <p className="mt-2 text-zinc-400">Messages and images are encrypted before storage.</p>
 
@@ -104,12 +104,12 @@ const Chat = () => {
             <input
               value={roomId}
               onChange={(e) => setRoomId(e.target.value.toUpperCase())}
-              className="flex-1 rounded-2xl border border-white/10 bg-zinc-950/80 px-4 py-3 text-white uppercase outline-none focus:border-brand-500"
+              className="ui-input flex-1 uppercase"
               placeholder="Room key"
             />
             <button
               onClick={() => loadHistory(roomId)}
-              className="rounded-2xl border border-brand-500/30 bg-brand-500/10 px-5 py-3 font-semibold text-brand-200 transition hover:bg-brand-500 hover:text-white"
+              className="ui-button-secondary"
             >
               Join room
             </button>
@@ -143,18 +143,18 @@ const Chat = () => {
                 type="file"
                 accept="image/*"
                 onChange={(e) => handleFile(e.target.files?.[0])}
-                className="rounded-2xl border border-white/10 bg-zinc-950/80 px-4 py-3 text-sm text-zinc-400 file:mr-4 file:rounded-xl file:border-0 file:bg-brand-500 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white"
+                className="ui-input text-sm text-zinc-400 file:mr-4 file:rounded-xl file:border-0 file:bg-brand-500 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white"
               />
               <input
                 value={message}
                 onChange={(e) => onTyping(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                className="flex-1 rounded-2xl border border-white/10 bg-zinc-950/80 px-4 py-3 text-white outline-none focus:border-brand-500"
+                className="ui-input flex-1"
                 placeholder="Type message"
               />
               <button
                 onClick={sendMessage}
-                className="rounded-2xl bg-brand-500 px-5 py-3 font-semibold text-white transition hover:bg-brand-600"
+                className="ui-button-primary"
               >
                 Send
               </button>
@@ -167,4 +167,3 @@ const Chat = () => {
 };
 
 export default Chat;
-
