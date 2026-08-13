@@ -5,12 +5,19 @@ const FeedCard = ({ post, onLike }) => {
     <motion.article
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
-      className="overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-2xl shadow-black/20"
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.2 }}
+      className="ui-card group"
     >
-      {post.image && <img src={post.image} alt={post.title} className="h-56 w-full object-cover" />}
-      <div className="p-5">
-        <div className="mb-3 flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-700 font-bold text-white">
+      {post.image && (
+        <div className="relative">
+          <img src={post.image} alt={post.title} className="h-56 w-full object-cover transition duration-300 group-hover:scale-[1.02]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+        </div>
+      )}
+      <div className="p-6">
+        <div className="mb-4 flex items-center gap-3">
+          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-700 font-bold text-white shadow-glow">
             {post.author?.name?.slice(0, 1)?.toUpperCase() || "U"}
           </div>
           <div>
@@ -22,10 +29,10 @@ const FeedCard = ({ post, onLike }) => {
         <h4 className="text-xl font-semibold text-white">{post.title}</h4>
         <p className="mt-3 leading-relaxed text-zinc-300">{post.content}</p>
 
-        <div className="mt-5 flex items-center justify-between">
+        <div className="mt-6 flex items-center justify-between gap-3">
           <button
             onClick={() => onLike?.(post._id)}
-            className="rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2 text-sm font-medium text-brand-200 transition hover:bg-brand-500 hover:text-white"
+            className="ui-button-secondary px-4 py-2 text-sm"
           >
             Like • {post.likes?.length || 0}
           </button>
@@ -39,4 +46,3 @@ const FeedCard = ({ post, onLike }) => {
 };
 
 export default FeedCard;
-

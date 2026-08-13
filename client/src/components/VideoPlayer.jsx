@@ -13,14 +13,14 @@ const VideoPlayer = ({ videoUrl, onReady, onStateChange, className = "" }) => {
   const videoId = useMemo(() => getYouTubeId(videoUrl), [videoUrl]);
 
   return (
-    <div className={`overflow-hidden rounded-3xl border border-white/10 bg-black shadow-2xl shadow-black/30 ${className}`}>
+    <div className={`ui-card relative aspect-video w-full overflow-hidden bg-black ${className}`}>
       <YouTube
         videoId={videoId}
         onReady={onReady}
         onStateChange={onStateChange}
         opts={{
           width: "100%",
-          height: "520",
+          height: "100%",
           playerVars: {
             modestbranding: 1,
             rel: 0,
@@ -34,4 +34,3 @@ const VideoPlayer = ({ videoUrl, onReady, onStateChange, className = "" }) => {
 };
 
 export default VideoPlayer;
-
