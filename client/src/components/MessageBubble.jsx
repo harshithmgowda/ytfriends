@@ -14,8 +14,8 @@ const MessageBubble = ({ message, isSelf, onImageClick }) => {
         <div
           className={`rounded-3xl px-4 py-3 text-sm shadow-lg ${
             isSelf
-              ? "rounded-br-md bg-brand-500 text-white"
-              : "rounded-bl-md border border-white/10 bg-white/5 text-zinc-100"
+              ? "rounded-br-md border border-brand-400/20 bg-gradient-to-br from-brand-500 to-brand-600 text-white"
+              : "rounded-bl-md border border-white/10 bg-white/5 text-zinc-100 backdrop-blur-xl"
           }`}
         >
           {message.message && <p className="whitespace-pre-wrap leading-relaxed">{message.message}</p>}

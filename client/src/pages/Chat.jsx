@@ -94,11 +94,16 @@ const Chat = () => {
     <div className="mx-auto grid max-w-7xl gap-6 px-4 py-8 lg:grid-cols-[280px_1fr] lg:px-8">
       <Sidebar />
 
-      <div className="ui-card">
-        <div className="border-b border-white/10 p-6">
-          <p className="ui-kicker">Encrypted chat</p>
-          <h1 className="mt-2 text-3xl font-bold text-white">Room chat</h1>
-          <p className="mt-2 text-zinc-400">Messages and images are encrypted before storage.</p>
+      <div className="ui-card overflow-hidden">
+        <div className="border-b border-white/10 bg-gradient-to-br from-white/5 to-transparent p-6">
+          <p className="ui-section-label">Encrypted chat</p>
+          <div className="mt-2 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <h1 className="text-3xl font-semibold tracking-tight text-white">Room chat</h1>
+              <p className="mt-2 max-w-2xl text-zinc-400">Messages and images are encrypted before storage. Keep the conversation light, quick, and in sync with the room.</p>
+            </div>
+            <div className="ui-chip w-fit border-brand-500/20 bg-brand-500/10 text-brand-200">Live room messages</div>
+          </div>
 
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
             <input

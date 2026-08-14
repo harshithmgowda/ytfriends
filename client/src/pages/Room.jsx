@@ -157,19 +157,31 @@ const Room = () => {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 lg:px-8">
-      <section className="ui-surface mb-4 px-5 py-4">
-        <p className="ui-kicker">Private watch room</p>
-        <div className="mt-2 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-          <h1 className="text-2xl font-bold text-white">{room?.title || "Watch Together"}</h1>
-          <p className="text-sm text-zinc-400">
-            Room key: <span className="font-semibold text-brand-300">{roomKey}</span>
-          </p>
+      <section className="ui-hero mb-4">
+        <div className="grid gap-4 p-6 lg:grid-cols-[1.2fr_0.8fr] lg:p-8">
+          <div>
+            <p className="ui-section-label">Private watch room</p>
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white sm:text-4xl">{room?.title || "Watch Together"}</h1>
+            <p className="mt-3 max-w-2xl text-zinc-300">
+              Room key <span className="font-semibold text-brand-300">{roomKey}</span> • {isPlaying ? "Playback is live" : "Playback is paused"}
+            </p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="ui-stat">
+              <p className="ui-stat-label">Participants</p>
+              <p className="ui-stat-value">{room?.participants?.length || 0}</p>
+            </div>
+            <div className="ui-stat">
+              <p className="ui-stat-label">Mode</p>
+              <p className="ui-stat-value text-brand-300">{isHost ? "Host" : "Guest"}</p>
+            </div>
+          </div>
         </div>
       </section>
 
       <div className="grid gap-4 lg:grid-cols-[380px_1fr]">
-        <section className="ui-card flex min-h-[calc(100vh-180px)] flex-col">
-          <div className="border-b border-white/10 p-4">
+        <section className="ui-card flex min-h-[calc(100vh-180px)] flex-col overflow-hidden">
+          <div className="border-b border-white/10 bg-gradient-to-br from-white/5 to-transparent p-4">
             <h2 className="text-lg font-semibold text-white">Chat</h2>
             <p className="text-sm text-zinc-400">Simple live chat for everyone in the room.</p>
           </div>
