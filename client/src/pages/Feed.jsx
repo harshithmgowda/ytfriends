@@ -36,13 +36,34 @@ const Feed = () => {
       <Sidebar />
 
       <div className="space-y-6">
-        <section className="ui-surface p-6">
-          <p className="ui-kicker">Community feed</p>
-          <h1 className="ui-title">Share what you&apos;re watching</h1>
-          <p className="ui-copy">Post a recommendation, a reaction, or a highlight from your watch room.</p>
+        <section className="ui-hero">
+          <div className="grid gap-6 p-6 lg:grid-cols-[1.15fr_0.85fr] lg:p-8">
+            <div>
+              <p className="ui-section-label">Community feed</p>
+              <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white sm:text-5xl">Share what you&apos;re watching.</h1>
+              <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-300">
+                Post a recommendation, a reaction, or a highlight from your watch room without making the feed feel noisy.
+              </p>
+            </div>
+            <div className="ui-panel p-5">
+              <p className="ui-section-label">Posting style</p>
+              <div className="mt-4 space-y-3 text-sm text-zinc-300">
+                <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                  <span>Short reactions</span>
+                  <span className="text-brand-300">Best for speed</span>
+                </div>
+                <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                  <span>Screenshot + caption</span>
+                  <span className="text-brand-300">More visual</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         <form onSubmit={createPost} className="ui-surface p-6">
+          <p className="ui-section-label">New post</p>
+          <h2 className="mt-2 text-2xl font-semibold text-white">Add a fresh take</h2>
           <div className="grid gap-3 md:grid-cols-2">
             <input
               value={form.title}

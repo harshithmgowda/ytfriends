@@ -29,15 +29,17 @@ const Navbar = () => {
           </div>
         </Link>
 
-        <nav className="hidden items-center gap-2 md:flex">
-          <NavLink to="/dashboard" className={navClass}>Dashboard</NavLink>
-          <NavLink to="/feed" className={navClass}>Feed</NavLink>
-          <NavLink to="/chat" className={navClass}>Chat</NavLink>
-          <NavLink to="/room/demo-room" className={navClass}>Room</NavLink>
-        </nav>
+        {user && (
+          <nav className="hidden items-center gap-2 md:flex">
+            <NavLink to="/dashboard" className={navClass}>Dashboard</NavLink>
+            <NavLink to="/feed" className={navClass}>Feed</NavLink>
+            <NavLink to="/chat" className={navClass}>Chat</NavLink>
+            <NavLink to="/room/demo-room" className={navClass}>Room</NavLink>
+          </nav>
+        )}
 
         <div className="flex items-center gap-3">
-          {user && (
+          {user ? (
             <div className="hidden items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 sm:flex">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-700 text-xs font-bold">
                 {user.name?.slice(0, 1).toUpperCase()}
@@ -47,13 +49,24 @@ const Navbar = () => {
                 <p className="text-xs text-zinc-400">{user.email}</p>
               </div>
             </div>
+          ) : (
+            <div className="hidden items-center gap-2 sm:flex">
+              <Link to="/login" className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-zinc-200 transition hover:bg-white/10">
+                Sign in
+              </Link>
+              <Link to="/register" className="rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2 text-sm font-medium text-brand-200 transition hover:bg-brand-500 hover:text-white">
+                Create account
+              </Link>
+            </div>
           )}
-          <button
-            onClick={handleLogout}
-            className="rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2 text-sm font-medium text-brand-200 transition hover:bg-brand-500 hover:text-white"
-          >
-            Logout
-          </button>
+          {user && (
+            <button
+              onClick={handleLogout}
+              className="rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2 text-sm font-medium text-brand-200 transition hover:bg-brand-500 hover:text-white"
+            >
+              Logout
+            </button>
+          )}
         </div>
       </div>
     </header>
